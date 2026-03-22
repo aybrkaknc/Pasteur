@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "copy2select"
+  },
+  "extensionDescription": {
+    "message": "Seçilen metni otomatik olarak panoya kopyalar ve izole bildirim penceresi üzerinden hızlı arama özelliği sunar. Firefox ve Chrome uyumlu, Manifest V3 destekli."
+  },
+  "copiedMessage": {
+    "message": "Kopyalandı!"
+  },
+  "failedMessage": {
+    "message": "Başarısız!"
+  }
+}

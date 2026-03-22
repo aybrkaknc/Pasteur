@@ -1,0 +1,27 @@
+{
+  "name": "copy2select",
+  "version": "0.0.114",
+  "description": "Automatically copies selected text to the clipboard.",
+  "main": "content.js",
+  "scripts": {
+    "clean": "node scripts/build.js --clean-only",
+    "build": "node scripts/build.js",
+    "build:all": "npm run build",
+    "zip:chrome": "npx bestzip dist/copy2select_chrome.zip dist/chrome/*",
+    "zip:firefox": "npx bestzip dist/copy2select_firefox.zip dist/firefox/*",
+    "zip:all": "npm run zip:chrome && npm run zip:firefox",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chrome",
+    "firefox",
+    "extension",
+    "copy",
+    "selection"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bestzip": "^2.2.2"
+  }
+}
