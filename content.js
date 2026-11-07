@@ -137,36 +137,61 @@ if (document.readyState === 'loading') {
   initializeNotification();
 }
 
-document.addEventListener('mouseup', function() {
-  const selection = window.getSelection();
-  const selectedText = selection.toString().trim();
-
-  // Minimum karakter eşiği (#8) ve çift kopyalama önleme (#9)
-  if (selectedText.length >= MIN_SELECTION_LENGTH && document.hasFocus() && selectedText !== lastCopiedText) {
-    currentSelectedText = selectedText;
-    navigator.clipboard.writeText(selectedText)
-      .then(() => {
-        lastCopiedText = selectedText;
-        showStatusNotification(selection, chrome.i18n.getMessage('copiedMessage'), 'success');
-      })
-      .catch((err) => {
-        console.error('Copy Failed:', err);
-        showStatusNotification(selection, chrome.i18n.getMessage('failedMessage'), 'error');
-      });
+// Returns { text, rect } for the current selection, including inside input/textarea.
+function getSelectedText() {
+  const el = document.activeElement;
+  if (el && (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT')) {
+    if (el.type === 'password') return { text: '', rect: null };
+    try {
+      const text = el.value.substring(el.selectionStart, el.selectionEnd).trim();
+      return { text, rect: el.getBoundingClientRect() };
+    } catch (e) {
+      // Some input types (email, number) do not expose selectionStart
+      return { text: '', rect: null };
+    }
   }
+  const selection = window.getSelection();
+  if (!selection || selection.rangeCount === 0) return { text: '', rect: null };
+  return { text: selection.toString().trim(), rect: selection.getRangeAt(0).getBoundingClientRect() };
+}
+
+function handleSelection() {
+  const { text, rect } = getSelectedText();
+  if (text.length < MIN_SELECTION_LENGTH || !document.hasFocus() || text === lastCopiedText) return;
+
+  currentSelectedText = text;
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      lastCopiedText = text;
+      showStatusNotification(rect, chrome.i18n.getMessage('copiedMessage'), 'success');
+    })
+    .catch((err) => {
+      console.error('Copy Failed:', err);
+      showStatusNotification(rect, chrome.i18n.getMessage('failedMessage'), 'error');
+    });
+}
+
+let mouseIsDown = false;
+let selectionTimeout = null;
+
+document.addEventListener('mousedown', () => { mouseIsDown = true; });
+document.addEventListener('mouseup', () => {
+  mouseIsDown = false;
+  clearTimeout(selectionTimeout);
+  handleSelection();
 });
 
-// Seçim temizlendiğinde (click) lastCopiedText'i sıfırla
-document.addEventListener('mousedown', function() {
-  const selection = window.getSelection();
-  if (selection.toString().trim().length === 0) {
-    lastCopiedText = '';
-  }
+// Keyboard/touch selection; also resets dedupe when the selection is cleared
+document.addEventListener('selectionchange', () => {
+  if (getSelectedText().text.length === 0) lastCopiedText = '';
+  if (mouseIsDown) return;
+  clearTimeout(selectionTimeout);
+  selectionTimeout = setTimeout(handleSelection, 400);
 });
 
 let hideTimeout = null;
 
-function showStatusNotification(selection, text, type) {
+function showStatusNotification(rect, text, type) {
   initializeNotification();
 
   const textSpan = notificationElement.querySelector('.notif-text');
@@ -186,9 +211,7 @@ function showStatusNotification(selection, text, type) {
     searchBtn.style.display = 'none';
   }
 
-  if (selection.rangeCount > 0) {
-    const range = selection.getRangeAt(0);
-    const rect = range.getBoundingClientRect();
+  if (rect) {
     // Viewport üst kenarına taşma kontrolü: minimum 8px mesafe bırak
     const topPosition = Math.max(8, rect.top - 50);
     notificationElement.style.top = `${topPosition}px`;
