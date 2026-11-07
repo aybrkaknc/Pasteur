@@ -75,7 +75,9 @@ const NOTIF_STYLES = `
 `;
 
 function initializeNotification() {
-  if (document.getElementById('copy2select-host')) return;
+  if (notificationElement && notificationElement.isConnected) return;
+  const staleHost = document.getElementById('copy2select-host');
+  if (staleHost) staleHost.remove();
 
   const host = document.createElement('div');
   host.id = 'copy2select-host';
@@ -165,7 +167,7 @@ document.addEventListener('mousedown', function() {
 let hideTimeout = null;
 
 function showStatusNotification(selection, text, type) {
-  if (!notificationElement) initializeNotification();
+  initializeNotification();
 
   const textSpan = notificationElement.querySelector('.notif-text');
   const separator = notificationElement.querySelector('.separator');
