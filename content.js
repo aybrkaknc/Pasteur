@@ -215,7 +215,10 @@ function showStatusNotification(rect, text, type) {
     // Viewport üst kenarına taşma kontrolü: minimum 8px mesafe bırak
     const topPosition = Math.max(8, rect.top - 50);
     notificationElement.style.top = `${topPosition}px`;
-    notificationElement.style.left = `${rect.left + (rect.width / 2)}px`;
+    const halfWidth = notificationElement.offsetWidth / 2;
+    const center = rect.left + (rect.width / 2);
+    const left = Math.min(Math.max(center, halfWidth + 8), window.innerWidth - halfWidth - 8);
+    notificationElement.style.left = `${left}px`;
   }
 
   requestAnimationFrame(() => {
