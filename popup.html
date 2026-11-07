@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <label class="switch-row">
+    <span data-i18n="popupAutoCopy"></span>
+    <input type="checkbox" id="autoCopy" class="switch">
+  </label>
+  <label class="switch-row" id="siteRow">
+    <span data-i18n="popupDisableSite"></span>
+    <input type="checkbox" id="disableSite" class="switch">
+  </label>
+  <p id="siteHost" class="host"></p>
+  <button id="openOptions" data-i18n="popupSettings"></button>
+
+  <script src="settings.js"></script>
+  <script src="i18n.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

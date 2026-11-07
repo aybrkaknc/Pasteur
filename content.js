@@ -1,18 +1,32 @@
-// content.js - copy2select (v1.1.101)
-// Shadow DOM izolasyonu + Hızlı Arama Özelliği
+// content.js - copy2select
+// Shadow DOM isolated notification + quick search + optional manual copy mode
 
 let shadowRoot = null;
 let notificationElement = null;
 let currentSelectedText = '';
-let lastCopiedText = ''; // Çift kopyalama önleme için son kopyalanan metin
-const MIN_SELECTION_LENGTH = 2; // Minimum seçim uzunluğu eşiği
+let lastHandledText = ''; // Prevents handling the same selection twice
+let settings = { ...DEFAULT_SETTINGS };
 
-// Modern UI Stilleri
+loadSettings().then((s) => { settings = s; });
+browser.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'sync') return;
+  for (const key in changes) settings[key] = changes[key].newValue;
+});
+
+// Cross-origin iframes cannot read the top hostname; they fall back to their own.
+function getPageHostname() {
+  try {
+    return window.top.location.hostname;
+  } catch (e) {
+    return location.hostname;
+  }
+}
+
 const NOTIF_STYLES = `
   #copy2select-notif {
     position: fixed;
     color: #ffffff;
-    padding: 0 8px 0 16px; /* Sağ taraf butona daha yakın olması için daraltıldı */
+    padding: 0 8px 0 16px;
     height: 38px;
     border-radius: 12px;
     font-family: 'Inter', -apple-system, system-ui, sans-serif;
@@ -21,7 +35,7 @@ const NOTIF_STYLES = `
     z-index: 2147483647;
     opacity: 0;
     transform: scale(0.9) translateY(10px) translateX(-50%);
-    transition: opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+    transition: opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
                 transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     pointer-events: auto;
     white-space: nowrap;
@@ -29,12 +43,8 @@ const NOTIF_STYLES = `
     border: 1px solid rgba(255, 255, 255, 0.15);
     display: flex;
     align-items: center;
-    gap: 12px; /* Elemanlar arası mesafe artırılarak denge sağlandı */
+    gap: 12px;
     left: 50%;
-  }
-
-  .notif-text {
-    /* margin-right kaldırıldı, denge gap ile sağlanıyor */
   }
 
   .separator {
@@ -43,7 +53,18 @@ const NOTIF_STYLES = `
     background-color: rgba(255, 255, 255, 0.2);
   }
 
-  /* Arama Butonu (Mercek) */
+  #notif-copy-btn {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font: inherit;
+    padding: 4px 6px;
+    margin-left: -6px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+  }
+
   #notif-search-btn {
     cursor: pointer;
     background: transparent;
@@ -57,6 +78,7 @@ const NOTIF_STYLES = `
     user-select: none;
   }
 
+  #notif-copy-btn:hover,
   #notif-search-btn:hover {
     background-color: rgba(255, 255, 255, 0.1);
   }
@@ -65,10 +87,11 @@ const NOTIF_STYLES = `
     width: 18px;
     height: 18px;
     fill: #ffffff;
-    display: block; /* Taşmaları önler */
+    display: block;
   }
 
-  #copy2select-notif.success { background-color: #1a1c1e; }
+  #copy2select-notif.success,
+  #copy2select-notif.offer { background-color: #1a1c1e; }
   #copy2select-notif.error { background-color: #2c1a1a; border-color: rgba(255, 0, 0, 0.2); }
   #copy2select-notif.show { opacity: 1; transform: scale(1) translateY(0) translateX(-50%); }
   #copy2select-notif.hide { pointer-events: none; opacity: 0; transform: scale(0.95) translateY(-5px) translateX(-50%); }
@@ -91,46 +114,59 @@ function initializeNotification() {
 
   notificationElement = document.createElement('div');
   notificationElement.id = 'copy2select-notif';
-  
-  // İçerik yapısı: Metin + Ayırıcı + Arama Butonu (Güvenli DOM)
+  notificationElement.setAttribute('role', 'status');
+  notificationElement.setAttribute('aria-live', 'polite');
+
   const textSpan = document.createElement('span');
   textSpan.className = 'notif-text';
+
+  const copyBtn = document.createElement('button');
+  copyBtn.id = 'notif-copy-btn';
+  copyBtn.textContent = browser.i18n.getMessage('copyAction');
 
   const separator = document.createElement('div');
   separator.className = 'separator';
 
   const searchBtn = document.createElement('button');
   searchBtn.id = 'notif-search-btn';
-  searchBtn.title = chrome.i18n.getMessage('searchTitle');
-  
-  // SVG'yi güvenli ve doğru bir şekilde oluşturalım (Namespace)
-  const svgNS = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(svgNS, "svg");
-  svg.setAttribute("viewBox", "0 0 24 24");
-  
-  const path = document.createElementNS(svgNS, "path");
-  path.setAttribute("d", "M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z");
-  
+  searchBtn.title = browser.i18n.getMessage('searchTitle');
+  searchBtn.setAttribute('aria-label', browser.i18n.getMessage('searchTitle'));
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('aria-hidden', 'true');
+
+  const path = document.createElementNS(svgNS, 'path');
+  path.setAttribute('d', 'M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z');
+
   svg.appendChild(path);
   searchBtn.appendChild(svg);
 
   notificationElement.appendChild(textSpan);
+  notificationElement.appendChild(copyBtn);
   notificationElement.appendChild(separator);
   notificationElement.appendChild(searchBtn);
 
-  // Arama butonu olay dinleyicisi
+  // Keep the page selection when clicking inside the bubble
+  notificationElement.addEventListener('mousedown', (e) => e.preventDefault());
+
+  copyBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    copyText(currentSelectedText, null);
+  });
+
   searchBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (currentSelectedText) {
-      const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(currentSelectedText)}`;
-      window.open(searchUrl, '_blank', 'noopener,noreferrer');
+      const base = SEARCH_ENGINES[settings.searchEngine] || SEARCH_ENGINES.google;
+      window.open(base + encodeURIComponent(currentSelectedText), '_blank', 'noopener,noreferrer');
     }
   });
 
   shadowRoot.appendChild(notificationElement);
 }
 
-// Hazırlık yap
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializeNotification);
 } else {
@@ -141,7 +177,7 @@ if (document.readyState === 'loading') {
 function getSelectedText() {
   const el = document.activeElement;
   if (el && (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT')) {
-    if (el.type === 'password') return { text: '', rect: null };
+    if (el.type === 'password' || !settings.copyInFields) return { text: '', rect: null };
     try {
       const text = el.value.substring(el.selectionStart, el.selectionEnd).trim();
       return { text, rect: el.getBoundingClientRect() };
@@ -155,20 +191,31 @@ function getSelectedText() {
   return { text: selection.toString().trim(), rect: selection.getRangeAt(0).getBoundingClientRect() };
 }
 
-function handleSelection() {
-  const { text, rect } = getSelectedText();
-  if (text.length < MIN_SELECTION_LENGTH || !document.hasFocus() || text === lastCopiedText) return;
-
-  currentSelectedText = text;
+// rect is null when called from the bubble; the bubble then stays in place.
+function copyText(text, rect) {
   navigator.clipboard.writeText(text)
     .then(() => {
-      lastCopiedText = text;
-      showStatusNotification(rect, chrome.i18n.getMessage('copiedMessage'), 'success');
+      showStatusNotification(rect, 'success');
     })
     .catch((err) => {
       console.error('Copy Failed:', err);
-      showStatusNotification(rect, chrome.i18n.getMessage('failedMessage'), 'error');
+      showStatusNotification(rect, 'error');
     });
+}
+
+function handleSelection() {
+  if (!settings.enabled || isHostExcluded(getPageHostname(), settings.excludedSites)) return;
+
+  const { text, rect } = getSelectedText();
+  if (text.length < settings.minLength || !document.hasFocus() || text === lastHandledText) return;
+
+  currentSelectedText = text;
+  lastHandledText = text;
+  if (settings.autoCopy) {
+    copyText(text, rect);
+  } else {
+    showStatusNotification(rect, 'offer');
+  }
 }
 
 let mouseIsDown = false;
@@ -183,7 +230,7 @@ document.addEventListener('mouseup', () => {
 
 // Keyboard/touch selection; also resets dedupe when the selection is cleared
 document.addEventListener('selectionchange', () => {
-  if (getSelectedText().text.length === 0) lastCopiedText = '';
+  if (getSelectedText().text.length === 0) lastHandledText = '';
   if (mouseIsDown) return;
   clearTimeout(selectionTimeout);
   selectionTimeout = setTimeout(handleSelection, 400);
@@ -191,30 +238,30 @@ document.addEventListener('selectionchange', () => {
 
 let hideTimeout = null;
 
-function showStatusNotification(rect, text, type) {
+// type: 'success' | 'error' | 'offer' (manual mode, shows the copy button)
+function showStatusNotification(rect, type) {
   initializeNotification();
 
   const textSpan = notificationElement.querySelector('.notif-text');
+  const copyBtn = notificationElement.querySelector('#notif-copy-btn');
   const separator = notificationElement.querySelector('.separator');
   const searchBtn = notificationElement.querySelector('#notif-search-btn');
 
-  notificationElement.className = ''; 
+  notificationElement.className = '';
   notificationElement.classList.add(type);
-  textSpan.textContent = text;
 
-  // Sadece başarı durumunda aramayı göster, hatalarda gizle
-  if (type === 'success') {
-    separator.style.display = 'block';
-    searchBtn.style.display = 'flex';
-  } else {
-    separator.style.display = 'none';
-    searchBtn.style.display = 'none';
-  }
+  textSpan.style.display = type === 'offer' ? 'none' : 'inline';
+  copyBtn.style.display = type === 'offer' ? 'inline' : 'none';
+  if (type === 'success') textSpan.textContent = browser.i18n.getMessage('copiedMessage');
+  if (type === 'error') textSpan.textContent = browser.i18n.getMessage('failedMessage');
+
+  const showSearch = type !== 'error';
+  separator.style.display = showSearch ? 'block' : 'none';
+  searchBtn.style.display = showSearch ? 'flex' : 'none';
 
   if (rect) {
-    // Viewport üst kenarına taşma kontrolü: minimum 8px mesafe bırak
-    const topPosition = Math.max(8, rect.top - 50);
-    notificationElement.style.top = `${topPosition}px`;
+    // Keep at least 8px from the viewport edges
+    notificationElement.style.top = `${Math.max(8, rect.top - 50)}px`;
     const halfWidth = notificationElement.offsetWidth / 2;
     const center = rect.left + (rect.width / 2);
     const left = Math.min(Math.max(center, halfWidth + 8), window.innerWidth - halfWidth - 8);
@@ -225,10 +272,8 @@ function showStatusNotification(rect, text, type) {
     notificationElement.classList.add('show');
   });
 
-  // Zamanlayıcıyı temizle (tekrar kopyalama durumunda bildirim açık kalsın)
   if (hideTimeout) clearTimeout(hideTimeout);
-
   hideTimeout = setTimeout(() => {
     notificationElement.classList.replace('show', 'hide');
-  }, 2500); // Kullanıcının butona tıklaması için süreyi biraz uzatıyoruz (2.5 sn)
+  }, settings.duration);
 }

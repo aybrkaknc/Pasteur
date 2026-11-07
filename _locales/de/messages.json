@@ -13,5 +13,50 @@
   },
   "searchTitle": {
     "message": "Suchen"
+  },
+  "copyAction": {
+    "message": "Kopieren"
+  },
+  "optionsTitle": {
+    "message": "copy2select Einstellungen"
+  },
+  "optEnabled": {
+    "message": "Erweiterung aktivieren"
+  },
+  "optAutoCopy": {
+    "message": "Bei Auswahl automatisch kopieren"
+  },
+  "optAutoCopyHint": {
+    "message": "Wenn deaktiviert, erscheint neben der Auswahl eine Kopieren-Schaltfläche."
+  },
+  "optCopyInFields": {
+    "message": "Auswahl in Textfeldern kopieren (Passwörter werden nie kopiert)"
+  },
+  "optDuration": {
+    "message": "Benachrichtigungsdauer (ms)"
+  },
+  "optMinLength": {
+    "message": "Minimale Auswahllänge"
+  },
+  "optSearchEngine": {
+    "message": "Suchmaschine"
+  },
+  "optExcluded": {
+    "message": "Ausgeschlossene Seiten (eine Domain pro Zeile, Subdomains inbegriffen)"
+  },
+  "optSaved": {
+    "message": "Gespeichert"
+  },
+  "popupAutoCopy": {
+    "message": "Automatisch kopieren"
+  },
+  "popupDisableSite": {
+    "message": "Auf dieser Seite deaktivieren"
+  },
+  "popupSettings": {
+    "message": "Einstellungen"
+  },
+  "popupUnavailable": {
+    "message": "Auf dieser Seite nicht verfügbar"
   }
 }

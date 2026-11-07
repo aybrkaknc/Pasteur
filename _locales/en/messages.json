@@ -13,5 +13,50 @@
   },
   "searchTitle": {
     "message": "Search"
+  },
+  "copyAction": {
+    "message": "Copy"
+  },
+  "optionsTitle": {
+    "message": "copy2select Settings"
+  },
+  "optEnabled": {
+    "message": "Enable extension"
+  },
+  "optAutoCopy": {
+    "message": "Copy automatically on selection"
+  },
+  "optAutoCopyHint": {
+    "message": "When off, a Copy button appears next to the selection."
+  },
+  "optCopyInFields": {
+    "message": "Copy selections in text fields (passwords are never copied)"
+  },
+  "optDuration": {
+    "message": "Notification duration (ms)"
+  },
+  "optMinLength": {
+    "message": "Minimum selection length"
+  },
+  "optSearchEngine": {
+    "message": "Search engine"
+  },
+  "optExcluded": {
+    "message": "Excluded sites (one domain per line, subdomains included)"
+  },
+  "optSaved": {
+    "message": "Saved"
+  },
+  "popupAutoCopy": {
+    "message": "Auto copy"
+  },
+  "popupDisableSite": {
+    "message": "Disable on this site"
+  },
+  "popupSettings": {
+    "message": "Settings"
+  },
+  "popupUnavailable": {
+    "message": "Not available on this page"
   }
 }

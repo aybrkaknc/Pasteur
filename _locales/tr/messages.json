@@ -13,5 +13,50 @@
   },
   "searchTitle": {
     "message": "Ara"
+  },
+  "copyAction": {
+    "message": "Kopyala"
+  },
+  "optionsTitle": {
+    "message": "copy2select Ayarları"
+  },
+  "optEnabled": {
+    "message": "Eklentiyi etkinleştir"
+  },
+  "optAutoCopy": {
+    "message": "Seçimde otomatik kopyala"
+  },
+  "optAutoCopyHint": {
+    "message": "Kapalıyken seçimin yanında Kopyala butonu görünür."
+  },
+  "optCopyInFields": {
+    "message": "Metin alanlarındaki seçimleri kopyala (şifreler asla kopyalanmaz)"
+  },
+  "optDuration": {
+    "message": "Bildirim süresi (ms)"
+  },
+  "optMinLength": {
+    "message": "Minimum seçim uzunluğu"
+  },
+  "optSearchEngine": {
+    "message": "Arama motoru"
+  },
+  "optExcluded": {
+    "message": "Hariç tutulan siteler (her satıra bir alan adı, alt alan adları dahil)"
+  },
+  "optSaved": {
+    "message": "Kaydedildi"
+  },
+  "popupAutoCopy": {
+    "message": "Otomatik kopyala"
+  },
+  "popupDisableSite": {
+    "message": "Bu sitede kapat"
+  },
+  "popupSettings": {
+    "message": "Ayarlar"
+  },
+  "popupUnavailable": {
+    "message": "Bu sayfada kullanılamaz"
   }
 }
