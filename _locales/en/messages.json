@@ -3,12 +3,15 @@
     "message": "copy2select"
   },
   "extensionDescription": {
-    "message": "copy2select (v0.0.111) — Seamlessly copy any selected text and access quick search functionality via an isolated notification window. Optimized for both Firefox and Chrome with Manifest V3 support."
+    "message": "Automatically copies selected text and offers quick search from an isolated notification."
   },
   "copiedMessage": {
     "message": "Copied!"
   },
   "failedMessage": {
     "message": "Failed!"
+  },
+  "searchTitle": {
+    "message": "Search"
   }
 }

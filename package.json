@@ -1,27 +1,13 @@
 {
   "name": "copy2select",
-  "version": "0.0.114",
-  "description": "Automatically copies selected text to the clipboard.",
-  "main": "content.js",
+  "version": "1.1.101",
+  "private": true,
   "scripts": {
-    "clean": "node scripts/build.js --clean-only",
-    "build": "node scripts/build.js",
-    "build:all": "npm run build",
-    "zip:chrome": "npx bestzip dist/copy2select_chrome.zip dist/chrome/*",
-    "zip:firefox": "npx bestzip dist/copy2select_firefox.zip dist/firefox/*",
-    "zip:all": "npm run zip:chrome && npm run zip:firefox",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "web-ext run --source-dir . --ignore-files \"*.xpi\" \"package*.json\" \"node_modules\" \"web-ext-artifacts\" \"*.md\" \".gitignore\"",
+    "lint": "web-ext lint --source-dir . --ignore-files \"*.xpi\" \"package*.json\" \"node_modules\" \"web-ext-artifacts\" \"*.md\" \".gitignore\"",
+    "build": "web-ext build --source-dir . --overwrite-dest --ignore-files \"*.xpi\" \"package*.json\" \"node_modules\" \"web-ext-artifacts\" \"*.md\" \".gitignore\""
   },
-  "keywords": [
-    "chrome",
-    "firefox",
-    "extension",
-    "copy",
-    "selection"
-  ],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
-    "bestzip": "^2.2.2"
+    "web-ext": "^10.8.0"
   }
 }

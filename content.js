@@ -1,4 +1,4 @@
-// content.js - copy2select (v0.0.114)
+// content.js - copy2select (v1.1.101)
 // Shadow DOM izolasyonu + Hızlı Arama Özelliği
 
 let shadowRoot = null;
@@ -65,19 +65,13 @@ const NOTIF_STYLES = `
     width: 18px;
     height: 18px;
     fill: #ffffff;
+    display: block; /* Taşmaları önler */
   }
 
   #copy2select-notif.success { background-color: #1a1c1e; }
   #copy2select-notif.error { background-color: #2c1a1a; border-color: rgba(255, 0, 0, 0.2); }
   #copy2select-notif.show { opacity: 1; transform: scale(1) translateY(0) translateX(-50%); }
-  #copy2select-notif.hide { opacity: 0; transform: scale(0.95) translateY(-5px) translateX(-50%); }
-`;
-
-// Mercek (Büyüteç) Ikonu SVG
-const SEARCH_SVG = `
-<svg viewBox="0 0 24 24">
-  <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-</svg>
+  #copy2select-notif.hide { pointer-events: none; opacity: 0; transform: scale(0.95) translateY(-5px) translateX(-50%); }
 `;
 
 function initializeNotification() {
@@ -96,22 +90,38 @@ function initializeNotification() {
   notificationElement = document.createElement('div');
   notificationElement.id = 'copy2select-notif';
   
-  // İçerik yapısı: Metin + Ayırıcı + Arama Butonu
-  notificationElement.innerHTML = `
-    <span class="notif-text"></span>
-    <div class="separator"></div>
-    <button id="notif-search-btn" title="Ara">
-      ${SEARCH_SVG}
-    </button>
-  `;
+  // İçerik yapısı: Metin + Ayırıcı + Arama Butonu (Güvenli DOM)
+  const textSpan = document.createElement('span');
+  textSpan.className = 'notif-text';
+
+  const separator = document.createElement('div');
+  separator.className = 'separator';
+
+  const searchBtn = document.createElement('button');
+  searchBtn.id = 'notif-search-btn';
+  searchBtn.title = chrome.i18n.getMessage('searchTitle');
+  
+  // SVG'yi güvenli ve doğru bir şekilde oluşturalım (Namespace)
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  
+  const path = document.createElementNS(svgNS, "path");
+  path.setAttribute("d", "M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z");
+  
+  svg.appendChild(path);
+  searchBtn.appendChild(svg);
+
+  notificationElement.appendChild(textSpan);
+  notificationElement.appendChild(separator);
+  notificationElement.appendChild(searchBtn);
 
   // Arama butonu olay dinleyicisi
-  const searchBtn = notificationElement.querySelector('#notif-search-btn');
   searchBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (currentSelectedText) {
       const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(currentSelectedText)}`;
-      window.open(searchUrl, '_blank');
+      window.open(searchUrl, '_blank', 'noopener,noreferrer');
     }
   });
 
@@ -132,9 +142,9 @@ document.addEventListener('mouseup', function() {
   // Minimum karakter eşiği (#8) ve çift kopyalama önleme (#9)
   if (selectedText.length >= MIN_SELECTION_LENGTH && document.hasFocus() && selectedText !== lastCopiedText) {
     currentSelectedText = selectedText;
-    lastCopiedText = selectedText;
     navigator.clipboard.writeText(selectedText)
       .then(() => {
+        lastCopiedText = selectedText;
         showStatusNotification(selection, chrome.i18n.getMessage('copiedMessage'), 'success');
       })
       .catch((err) => {

@@ -1,11 +1,5 @@
 node_modules/
-dist/
-*.log
-styles.css
-.DS_Store
-.gemini/
-.agent/
-_agents/
-walkthrough.md
-task.md
-implementation_plan.md
+web-ext-artifacts/
+*.xpi
+.env
+SESSION_SUMMARY.md

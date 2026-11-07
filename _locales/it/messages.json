@@ -1,0 +1,17 @@
+{
+  "extensionName": {
+    "message": "copy2select"
+  },
+  "extensionDescription": {
+    "message": "Copia automaticamente il testo selezionato e offre una ricerca rapida da una notifica isolata."
+  },
+  "copiedMessage": {
+    "message": "Copiato!"
+  },
+  "failedMessage": {
+    "message": "Fallito!"
+  },
+  "searchTitle": {
+    "message": "Cerca"
+  }
+}
