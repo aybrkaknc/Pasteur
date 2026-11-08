@@ -60,7 +60,7 @@ Plain scripts without a build step. The content scripts share one scope and are 
 ## Questions
 
 **Does it send my data anywhere?**
-No. Settings are stored in the browser's sync storage. Highlights are stored locally on your device.
+No. Settings are stored in the browser's sync storage. Highlights are stored locally on your device. See [PRIVACY.md](PRIVACY.md).
 
 **Why is the pen missing inside text fields?**
 Highlights cannot be made inside input and textarea fields, so the pen is hidden there.

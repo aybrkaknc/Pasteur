@@ -60,7 +60,7 @@ Derleme adımı olmayan düz betikler. İçerik betikleri tek bir kapsamı payla
 ## Sorular
 
 **Verilerim bir yere gönderiliyor mu?**
-Hayır. Ayarlar tarayıcının senkronizasyon deposunda tutulur. Vurgular cihazınızda yerel olarak saklanır.
+Hayır. Ayarlar tarayıcının senkronizasyon deposunda tutulur. Vurgular cihazınızda yerel olarak saklanır. Ayrıntılar için [PRIVACY.tr.md](PRIVACY.tr.md) dosyasına bakın.
 
 **Metin alanlarının içinde kalem neden yok?**
 Input ve textarea alanlarının içinde vurgu yapılamadığı için kalem orada gizlenir.
