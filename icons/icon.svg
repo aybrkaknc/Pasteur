@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#18181B"/>
+      <stop offset="1" stop-color="#09090B"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#bg)"/>
+  <rect x="4.75" y="4.75" width="118.5" height="118.5" rx="27.5" fill="none" stroke="#fff" stroke-opacity="0.08" stroke-width="1.5"/>
+
+  <rect x="26" y="26" width="70" height="8" rx="4" fill="#3F3F46"/>
+  <rect x="26" y="40" width="44" height="8" rx="4" fill="#3F3F46"/>
+
+  <!-- copy layer behind -->
+  <rect x="36" y="74" width="72" height="24" rx="5" fill="#F59E0B" fill-opacity="0.35"/>
+  <!-- selection -->
+  <rect x="26" y="64" width="72" height="24" rx="5" fill="#F59E0B"/>
+  <rect x="33" y="72.5" width="58" height="7" rx="3.5" fill="#18181B"/>
+  <!-- handles -->
+  <rect x="24.25" y="58" width="3.5" height="30" rx="1.75" fill="#FFFFFF"/>
+  <circle cx="26" cy="57" r="6" fill="#FFFFFF"/>
+  <rect x="96.25" y="64" width="3.5" height="30" rx="1.75" fill="#FFFFFF"/>
+  <circle cx="98" cy="95" r="6" fill="#FFFFFF"/>
+</svg>
