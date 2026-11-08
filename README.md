@@ -11,7 +11,7 @@ Pasteur copies selected text to the clipboard and offers search, highlights and 
 [Türkçe](README.tr.md)
 
 ![Platform](https://img.shields.io/badge/Platform-Firefox_and_Chrome-0078D4)
-![Version](https://img.shields.io/badge/version-1.4.0-7b3fb3)
+![Version](https://img.shields.io/badge/version-1.5.0-7b3fb3)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 </div>
@@ -30,6 +30,7 @@ Pasteur copies selected text to the clipboard and offers search, highlights and 
 | **Links** | When the selection contains a link, the bubble offers "copy text" or "copy link". Nothing is copied silently. |
 | **Position** | Show the bubble above or below the selection, next to the cursor, in any screen corner, or at a custom offset. |
 | **Site exclusion** | Disable Pasteur on specific domains, subdomains included. |
+| **Restricted pages** | Optionally unlock right click, text selection and copying on pages that block them. Off by default. When a page blocks a right click or a selection, the toolbar icon shows a badge and the popup offers an Unlock button for that page. |
 
 **And also:**
 

@@ -3,5 +3,6 @@
 Promise.all([loadSettings(), activeTab]).then(([s, tabs]) => {
   initForm(s);
   initHighlightsCard();
+  initUnlockCard();
   initSiteToggle(s, tabs);
 });

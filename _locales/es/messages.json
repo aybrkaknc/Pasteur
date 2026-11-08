@@ -29,6 +29,24 @@
   "optCopyInFields": {
     "message": "Copiar selecciones en campos de texto (las contraseñas nunca se copian)"
   },
+  "optUnlockPage": {
+    "message": "Desbloquear clic derecho y selección en páginas restringidas"
+  },
+  "optUnlockPageHint": {
+    "message": "Anula los scripts de la página que bloquean el menú contextual, la selección de texto y el copiado."
+  },
+  "lockBlocked": {
+    "message": "El clic derecho y el copiado están bloqueados en esta página. Haz clic para desbloquear."
+  },
+  "lockUnlocked": {
+    "message": "Desbloqueado por Pasteur. Haz clic para desactivar."
+  },
+  "unlockBlocked": {
+    "message": "Esta página bloquea el clic derecho o la selección de texto."
+  },
+  "unlockNow": {
+    "message": "Desbloquear"
+  },
   "optDuration": {
     "message": "Duración de la notificación (ms)"
   },

@@ -1,6 +1,6 @@
 // popup/form.js - the settings form: fill from storage, save on change
 
-const toggles = ['enabled', 'autoCopy', 'copyInFields'];
+const toggles = ['enabled', 'autoCopy', 'copyInFields', 'unlockPage'];
 const statusEl = document.getElementById('status');
 let statusTimeout = null;
 
@@ -58,6 +58,6 @@ function initForm(s) {
   customOffsetEl.hidden = s.position !== 'custom';
   positionEl.addEventListener('change', () => { customOffsetEl.hidden = positionEl.value !== 'custom'; });
 
-  document.querySelectorAll('#enabled, #autoCopy, #copyInFields, #duration, #minLength, #searchEngine, #position, #offsetX, #offsetY, #highlightColor, #excludedSites')
+  document.querySelectorAll('#enabled, #autoCopy, #copyInFields, #unlockPage, #duration, #minLength, #searchEngine, #position, #offsetX, #offsetY, #highlightColor, #excludedSites')
     .forEach((el) => el.addEventListener('change', save));
 }

@@ -29,6 +29,24 @@
   "optCopyInFields": {
     "message": "Copy selections in text fields (passwords are never copied)"
   },
+  "optUnlockPage": {
+    "message": "Unlock right click and selection on restricted pages"
+  },
+  "optUnlockPageHint": {
+    "message": "Overrides page scripts that block the context menu, text selection and copying."
+  },
+  "lockBlocked": {
+    "message": "Right click and copying are blocked on this page. Click to unlock."
+  },
+  "lockUnlocked": {
+    "message": "Unlocked by Pasteur. Click to turn off."
+  },
+  "unlockBlocked": {
+    "message": "This page blocks right click or text selection."
+  },
+  "unlockNow": {
+    "message": "Unlock"
+  },
   "optDuration": {
     "message": "Notification duration (ms)"
   },

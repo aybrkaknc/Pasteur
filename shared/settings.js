@@ -6,6 +6,7 @@ const DEFAULT_SETTINGS = {
   enabled: true,
   autoCopy: true,
   copyInFields: true,
+  unlockPage: false, // Overrides page scripts that block right click, selection and copying
   excludedSites: [],
   duration: 2500,
   minLength: 2,

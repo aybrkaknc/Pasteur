@@ -29,6 +29,24 @@
   "optCopyInFields": {
     "message": "Auswahl in Textfeldern kopieren (Passwörter werden nie kopiert)"
   },
+  "optUnlockPage": {
+    "message": "Rechtsklick und Auswahl auf eingeschränkten Seiten freischalten"
+  },
+  "optUnlockPageHint": {
+    "message": "Setzt Seitenskripte außer Kraft, die Kontextmenü, Textauswahl und Kopieren blockieren."
+  },
+  "lockBlocked": {
+    "message": "Rechtsklick und Kopieren sind auf dieser Seite blockiert. Zum Freischalten klicken."
+  },
+  "lockUnlocked": {
+    "message": "Von Pasteur freigeschaltet. Zum Ausschalten klicken."
+  },
+  "unlockBlocked": {
+    "message": "Diese Seite blockiert Rechtsklick oder Textauswahl."
+  },
+  "unlockNow": {
+    "message": "Freischalten"
+  },
   "optDuration": {
     "message": "Benachrichtigungsdauer (ms)"
   },

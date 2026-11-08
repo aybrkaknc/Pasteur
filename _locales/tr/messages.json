@@ -29,6 +29,24 @@
   "optCopyInFields": {
     "message": "Metin alanlarındaki seçimleri kopyala (şifreler asla kopyalanmaz)"
   },
+  "optUnlockPage": {
+    "message": "Kısıtlı sayfalarda sağ tıkı ve metin seçimini aç"
+  },
+  "optUnlockPageHint": {
+    "message": "Sağ tık menüsünü, metin seçimini ve kopyalamayı engelleyen sayfa betiklerini devre dışı bırakır."
+  },
+  "lockBlocked": {
+    "message": "Bu sayfada sağ tık ve kopyalama engelli. Açmak için tıklayın."
+  },
+  "lockUnlocked": {
+    "message": "Pasteur tarafından açıldı. Kapatmak için tıklayın."
+  },
+  "unlockBlocked": {
+    "message": "Bu sayfa sağ tıkı veya metin seçimini engelliyor."
+  },
+  "unlockNow": {
+    "message": "Kilidi aç"
+  },
   "optDuration": {
     "message": "Bildirim süresi (ms)"
   },

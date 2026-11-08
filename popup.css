@@ -45,6 +45,8 @@ header h1 { font-size: 14px; font-weight: 600; margin: 0; flex: 1; letter-spacin
   margin-bottom: 8px;
 }
 
+.warn { border-color: rgba(255, 176, 32, 0.5); background: rgba(255, 176, 32, 0.08); }
+
 .site, .row {
   display: flex;
   align-items: center;

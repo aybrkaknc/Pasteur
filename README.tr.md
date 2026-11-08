@@ -11,7 +11,7 @@ Pasteur, seçtiğiniz metni panoya kopyalar ve seçiminizin yanındaki küçük 
 [English](README.md)
 
 ![Platform](https://img.shields.io/badge/Platform-Firefox_ve_Chrome-0078D4)
-![Sürüm](https://img.shields.io/badge/sürüm-1.4.0-7b3fb3)
+![Sürüm](https://img.shields.io/badge/sürüm-1.5.0-7b3fb3)
 ![Lisans](https://img.shields.io/badge/lisans-MIT-blue)
 
 </div>
@@ -30,6 +30,7 @@ Pasteur, seçtiğiniz metni panoya kopyalar ve seçiminizin yanındaki küçük 
 | **Bağlantılar** | Seçim bir bağlantı içeriyorsa baloncuk "metni kopyala" ya da "bağlantıyı kopyala" seçeneği sunar. Sessizce kopyalama yapılmaz. |
 | **Konum** | Baloncuğu seçimin üstünde ya da altında, imlecin yanında, ekranın herhangi bir köşesinde veya özel bir kaydırmayla gösterin. |
 | **Site hariç tutma** | Pasteur'ı belirli alan adlarında kapatın, alt alan adları dahil. |
+| **Kısıtlı sayfalar** | İsteğe bağlı olarak sağ tıkı, metin seçimini ve kopyalamayı engelleyen sayfalarda bunları açın. Varsayılan olarak kapalıdır. Bir sayfa sağ tıkı veya seçimi engellediğinde araç çubuğu simgesinde bir rozet görünür ve popup o sayfa için Kilidi aç düğmesi sunar. |
 
 **Ayrıca:**
 

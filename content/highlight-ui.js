@@ -48,5 +48,6 @@ function handlePageRequest(type) {
   if (type === 'hl-next') return Promise.resolve(goToHighlight(1));
   if (type === 'hl-prev') return Promise.resolve(goToHighlight(-1));
   if (type === 'hl-state') return Promise.resolve(hlState());
+  if (type === 'unlock-state' || type === 'unlock-now') return Promise.resolve(handleUnlockRequest(type));
   return null;
 }
