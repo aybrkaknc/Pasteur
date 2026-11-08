@@ -17,9 +17,6 @@
   "copyAction": {
     "message": "Kopyala"
   },
-  "optionsTitle": {
-    "message": "copy2select Ayarları"
-  },
   "optEnabled": {
     "message": "Eklentiyi etkinleştir"
   },
@@ -41,22 +38,58 @@
   "optSearchEngine": {
     "message": "Arama motoru"
   },
-  "optExcluded": {
-    "message": "Hariç tutulan siteler (her satıra bir alan adı, alt alan adları dahil)"
-  },
   "optSaved": {
     "message": "Kaydedildi"
-  },
-  "popupAutoCopy": {
-    "message": "Otomatik kopyala"
   },
   "popupDisableSite": {
     "message": "Bu sitede kapat"
   },
-  "popupSettings": {
-    "message": "Ayarlar"
-  },
   "popupUnavailable": {
     "message": "Bu sayfada kullanılamaz"
+  },
+  "optExcludedTitle": {
+    "message": "Hariç tutulan siteler"
+  },
+  "optExcludedHint": {
+    "message": "Her satıra bir alan adı. Alt alan adları dahildir."
+  },
+  "settingsTitle": {
+    "message": "Ayarlar"
+  },
+  "optPosition": {
+    "message": "Bildirim konumu"
+  },
+  "posAbove": {
+    "message": "Seçimin üstünde"
+  },
+  "posBelow": {
+    "message": "Seçimin altında"
+  },
+  "posCursor": {
+    "message": "İmlecin yanında"
+  },
+  "posTopLeft": {
+    "message": "Sol üst köşe"
+  },
+  "posTopRight": {
+    "message": "Sağ üst köşe"
+  },
+  "posBottomLeft": {
+    "message": "Sol alt köşe"
+  },
+  "posBottomRight": {
+    "message": "Sağ alt köşe"
+  },
+  "posCustom": {
+    "message": "Özel"
+  },
+  "optOffsetX": {
+    "message": "Yatay kaydırma (px)"
+  },
+  "optOffsetY": {
+    "message": "Dikey kaydırma (px)"
+  },
+  "optOffsetHint": {
+    "message": "Seçimin üst ortasına göre. Negatif Y yukarı, negatif X sola taşır."
   }
 }

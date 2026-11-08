@@ -23,8 +23,9 @@
       "32": "icons/icon32.png"
     }
   },
-  "options_ui": {
-    "page": "options.html"
+  "background": {
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
   },
   "content_scripts": [
     {
@@ -36,6 +37,12 @@
         "settings.js",
         "content.js"
       ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["popup.html"],
+      "matches": ["<all_urls>"]
     }
   ],
   "browser_specific_settings": {

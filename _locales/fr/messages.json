@@ -17,9 +17,6 @@
   "copyAction": {
     "message": "Copier"
   },
-  "optionsTitle": {
-    "message": "Paramètres de copy2select"
-  },
   "optEnabled": {
     "message": "Activer l'extension"
   },
@@ -41,22 +38,58 @@
   "optSearchEngine": {
     "message": "Moteur de recherche"
   },
-  "optExcluded": {
-    "message": "Sites exclus (un domaine par ligne, sous-domaines inclus)"
-  },
   "optSaved": {
     "message": "Enregistré"
-  },
-  "popupAutoCopy": {
-    "message": "Copie automatique"
   },
   "popupDisableSite": {
     "message": "Désactiver sur ce site"
   },
-  "popupSettings": {
-    "message": "Paramètres"
-  },
   "popupUnavailable": {
     "message": "Indisponible sur cette page"
+  },
+  "optExcludedTitle": {
+    "message": "Sites exclus"
+  },
+  "optExcludedHint": {
+    "message": "Un domaine par ligne. Les sous-domaines sont inclus."
+  },
+  "settingsTitle": {
+    "message": "Paramètres"
+  },
+  "optPosition": {
+    "message": "Position de la notification"
+  },
+  "posAbove": {
+    "message": "Au-dessus de la sélection"
+  },
+  "posBelow": {
+    "message": "Sous la sélection"
+  },
+  "posCursor": {
+    "message": "À côté du curseur"
+  },
+  "posTopLeft": {
+    "message": "Coin supérieur gauche"
+  },
+  "posTopRight": {
+    "message": "Coin supérieur droit"
+  },
+  "posBottomLeft": {
+    "message": "Coin inférieur gauche"
+  },
+  "posBottomRight": {
+    "message": "Coin inférieur droit"
+  },
+  "posCustom": {
+    "message": "Personnalisée"
+  },
+  "optOffsetX": {
+    "message": "Décalage horizontal (px)"
+  },
+  "optOffsetY": {
+    "message": "Décalage vertical (px)"
+  },
+  "optOffsetHint": {
+    "message": "Par rapport au centre supérieur de la sélection. Un Y négatif monte, un X négatif va à gauche."
   }
 }

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "web-ext run --source-dir . --ignore-files \"*.xpi\" \"package*.json\" \"node_modules\" \"web-ext-artifacts\" \"*.md\" \".gitignore\"",
+    "start:chrome": "web-ext run --target chromium --source-dir . --ignore-files \"*.xpi\" \"package*.json\" \"node_modules\" \"web-ext-artifacts\" \"*.md\" \".gitignore\"",
     "lint": "web-ext lint --source-dir . --ignore-files \"*.xpi\" \"package*.json\" \"node_modules\" \"web-ext-artifacts\" \"*.md\" \".gitignore\"",
     "build": "web-ext build --source-dir . --overwrite-dest --ignore-files \"*.xpi\" \"package*.json\" \"node_modules\" \"web-ext-artifacts\" \"*.md\" \".gitignore\""
   },

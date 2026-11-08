@@ -17,9 +17,6 @@
   "copyAction": {
     "message": "Copia"
   },
-  "optionsTitle": {
-    "message": "Impostazioni di copy2select"
-  },
   "optEnabled": {
     "message": "Attiva estensione"
   },
@@ -41,22 +38,58 @@
   "optSearchEngine": {
     "message": "Motore di ricerca"
   },
-  "optExcluded": {
-    "message": "Siti esclusi (un dominio per riga, sottodomini inclusi)"
-  },
   "optSaved": {
     "message": "Salvato"
-  },
-  "popupAutoCopy": {
-    "message": "Copia automatica"
   },
   "popupDisableSite": {
     "message": "Disattiva su questo sito"
   },
-  "popupSettings": {
-    "message": "Impostazioni"
-  },
   "popupUnavailable": {
     "message": "Non disponibile in questa pagina"
+  },
+  "optExcludedTitle": {
+    "message": "Siti esclusi"
+  },
+  "optExcludedHint": {
+    "message": "Un dominio per riga. I sottodomini sono inclusi."
+  },
+  "settingsTitle": {
+    "message": "Impostazioni"
+  },
+  "optPosition": {
+    "message": "Posizione della notifica"
+  },
+  "posAbove": {
+    "message": "Sopra la selezione"
+  },
+  "posBelow": {
+    "message": "Sotto la selezione"
+  },
+  "posCursor": {
+    "message": "Accanto al cursore"
+  },
+  "posTopLeft": {
+    "message": "Angolo in alto a sinistra"
+  },
+  "posTopRight": {
+    "message": "Angolo in alto a destra"
+  },
+  "posBottomLeft": {
+    "message": "Angolo in basso a sinistra"
+  },
+  "posBottomRight": {
+    "message": "Angolo in basso a destra"
+  },
+  "posCustom": {
+    "message": "Personalizzata"
+  },
+  "optOffsetX": {
+    "message": "Spostamento orizzontale (px)"
+  },
+  "optOffsetY": {
+    "message": "Spostamento verticale (px)"
+  },
+  "optOffsetHint": {
+    "message": "Rispetto al centro superiore della selezione. Y negativo sposta in alto, X negativo a sinistra."
   }
 }

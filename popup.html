@@ -5,16 +5,88 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <label class="switch-row">
-    <span data-i18n="popupAutoCopy"></span>
-    <input type="checkbox" id="autoCopy" class="switch">
-  </label>
-  <label class="switch-row" id="siteRow">
-    <span data-i18n="popupDisableSite"></span>
-    <input type="checkbox" id="disableSite" class="switch">
-  </label>
-  <p id="siteHost" class="host"></p>
-  <button id="openOptions" data-i18n="popupSettings"></button>
+  <header>
+    <img src="icons/icon32.png" alt="" width="24" height="24">
+    <h1>copy2select</h1>
+    <span id="status" aria-live="polite"></span>
+    <input type="checkbox" id="enabled" class="switch" data-i18n-label="optEnabled">
+  </header>
+
+  <section class="card site">
+    <div>
+      <div class="label" data-i18n="popupDisableSite"></div>
+      <div id="siteHost" class="sub"></div>
+    </div>
+    <input type="checkbox" id="disableSite" class="switch" data-i18n-label="popupDisableSite">
+  </section>
+
+  <section class="card">
+    <div class="row">
+      <div>
+        <div class="label" data-i18n="optAutoCopy"></div>
+        <div class="sub" data-i18n="optAutoCopyHint"></div>
+      </div>
+      <input type="checkbox" id="autoCopy" class="switch" data-i18n-label="optAutoCopy">
+    </div>
+    <div class="row">
+      <div class="label" data-i18n="optCopyInFields"></div>
+      <input type="checkbox" id="copyInFields" class="switch" data-i18n-label="optCopyInFields">
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="grid">
+      <label>
+        <span class="sub" data-i18n="optDuration"></span>
+        <input type="number" id="duration" min="500" max="10000" step="100">
+      </label>
+      <label>
+        <span class="sub" data-i18n="optMinLength"></span>
+        <input type="number" id="minLength" min="1" max="50">
+      </label>
+    </div>
+    <label class="full">
+      <span class="sub" data-i18n="optSearchEngine"></span>
+      <select id="searchEngine">
+        <option value="google">Google</option>
+        <option value="duckduckgo">DuckDuckGo</option>
+        <option value="bing">Bing</option>
+        <option value="yandex">Yandex</option>
+      </select>
+    </label>
+    <label class="full">
+      <span class="sub" data-i18n="optPosition"></span>
+      <select id="position">
+        <option value="above" data-i18n="posAbove"></option>
+        <option value="below" data-i18n="posBelow"></option>
+        <option value="cursor" data-i18n="posCursor"></option>
+        <option value="top-left" data-i18n="posTopLeft"></option>
+        <option value="top-right" data-i18n="posTopRight"></option>
+        <option value="bottom-left" data-i18n="posBottomLeft"></option>
+        <option value="bottom-right" data-i18n="posBottomRight"></option>
+        <option value="custom" data-i18n="posCustom"></option>
+      </select>
+    </label>
+    <div id="customOffset" hidden>
+      <div class="grid full">
+        <label>
+          <span class="sub" data-i18n="optOffsetX"></span>
+          <input type="number" id="offsetX" min="-1000" max="1000" step="5">
+        </label>
+        <label>
+          <span class="sub" data-i18n="optOffsetY"></span>
+          <input type="number" id="offsetY" min="-1000" max="1000" step="5">
+        </label>
+      </div>
+      <div class="sub" data-i18n="optOffsetHint"></div>
+    </div>
+  </section>
+
+  <details class="card">
+    <summary data-i18n="optExcludedTitle"></summary>
+    <textarea id="excludedSites" rows="4" placeholder="example.com"></textarea>
+    <div class="sub" data-i18n="optExcludedHint"></div>
+  </details>
 
   <script src="settings.js"></script>
   <script src="i18n.js"></script>

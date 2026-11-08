@@ -17,9 +17,6 @@
   "copyAction": {
     "message": "Kopieren"
   },
-  "optionsTitle": {
-    "message": "copy2select Einstellungen"
-  },
   "optEnabled": {
     "message": "Erweiterung aktivieren"
   },
@@ -41,22 +38,58 @@
   "optSearchEngine": {
     "message": "Suchmaschine"
   },
-  "optExcluded": {
-    "message": "Ausgeschlossene Seiten (eine Domain pro Zeile, Subdomains inbegriffen)"
-  },
   "optSaved": {
     "message": "Gespeichert"
-  },
-  "popupAutoCopy": {
-    "message": "Automatisch kopieren"
   },
   "popupDisableSite": {
     "message": "Auf dieser Seite deaktivieren"
   },
-  "popupSettings": {
-    "message": "Einstellungen"
-  },
   "popupUnavailable": {
     "message": "Auf dieser Seite nicht verfügbar"
+  },
+  "optExcludedTitle": {
+    "message": "Ausgeschlossene Seiten"
+  },
+  "optExcludedHint": {
+    "message": "Eine Domain pro Zeile. Subdomains sind eingeschlossen."
+  },
+  "settingsTitle": {
+    "message": "Einstellungen"
+  },
+  "optPosition": {
+    "message": "Position der Benachrichtigung"
+  },
+  "posAbove": {
+    "message": "Über der Auswahl"
+  },
+  "posBelow": {
+    "message": "Unter der Auswahl"
+  },
+  "posCursor": {
+    "message": "Neben dem Mauszeiger"
+  },
+  "posTopLeft": {
+    "message": "Oben links"
+  },
+  "posTopRight": {
+    "message": "Oben rechts"
+  },
+  "posBottomLeft": {
+    "message": "Unten links"
+  },
+  "posBottomRight": {
+    "message": "Unten rechts"
+  },
+  "posCustom": {
+    "message": "Benutzerdefiniert"
+  },
+  "optOffsetX": {
+    "message": "Horizontaler Versatz (px)"
+  },
+  "optOffsetY": {
+    "message": "Vertikaler Versatz (px)"
+  },
+  "optOffsetHint": {
+    "message": "Relativ zur oberen Mitte der Auswahl. Negatives Y verschiebt nach oben, negatives X nach links."
   }
 }

@@ -17,9 +17,6 @@
   "copyAction": {
     "message": "Copy"
   },
-  "optionsTitle": {
-    "message": "copy2select Settings"
-  },
   "optEnabled": {
     "message": "Enable extension"
   },
@@ -41,22 +38,58 @@
   "optSearchEngine": {
     "message": "Search engine"
   },
-  "optExcluded": {
-    "message": "Excluded sites (one domain per line, subdomains included)"
-  },
   "optSaved": {
     "message": "Saved"
-  },
-  "popupAutoCopy": {
-    "message": "Auto copy"
   },
   "popupDisableSite": {
     "message": "Disable on this site"
   },
-  "popupSettings": {
-    "message": "Settings"
-  },
   "popupUnavailable": {
     "message": "Not available on this page"
+  },
+  "optExcludedTitle": {
+    "message": "Excluded sites"
+  },
+  "optExcludedHint": {
+    "message": "One domain per line. Subdomains are included."
+  },
+  "settingsTitle": {
+    "message": "Settings"
+  },
+  "optPosition": {
+    "message": "Notification position"
+  },
+  "posAbove": {
+    "message": "Above the selection"
+  },
+  "posBelow": {
+    "message": "Below the selection"
+  },
+  "posCursor": {
+    "message": "Next to the cursor"
+  },
+  "posTopLeft": {
+    "message": "Top left corner"
+  },
+  "posTopRight": {
+    "message": "Top right corner"
+  },
+  "posBottomLeft": {
+    "message": "Bottom left corner"
+  },
+  "posBottomRight": {
+    "message": "Bottom right corner"
+  },
+  "posCustom": {
+    "message": "Custom"
+  },
+  "optOffsetX": {
+    "message": "Horizontal offset (px)"
+  },
+  "optOffsetY": {
+    "message": "Vertical offset (px)"
+  },
+  "optOffsetHint": {
+    "message": "Relative to the top center of the selection. Negative Y moves up, negative X moves left."
   }
 }
