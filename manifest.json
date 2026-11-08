@@ -23,10 +23,6 @@
       "32": "icons/icon32.png"
     }
   },
-  "background": {
-    "service_worker": "background.js",
-    "scripts": ["background.js"]
-  },
   "content_scripts": [
     {
       "matches": [
@@ -34,9 +30,23 @@
       ],
       "all_frames": true,
       "js": [
-        "settings.js",
-        "highlight.js",
-        "content.js"
+        "shared/settings.js",
+        "highlight/store.js",
+        "highlight/anchor.js",
+        "highlight/nav.js",
+        "highlight/frames.js",
+        "highlight/init.js",
+        "content/state.js",
+        "content/bubble-styles.js",
+        "content/bubble.js",
+        "content/icons.js",
+        "content/bubble-dom.js",
+        "content/clipboard.js",
+        "content/selection.js",
+        "content/panel.js",
+        "content/highlight-ui.js",
+        "content/events.js",
+        "content/main.js"
       ],
       "css": [
         "highlight.css"

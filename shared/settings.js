@@ -1,4 +1,4 @@
-// Shared by content script, options page and popup.
+// shared/settings.js - defaults, constants and helpers shared by the content scripts and the popup.
 // Firefox exposes `browser`, Chrome only `chrome`; both return promises in MV3.
 const api = globalThis.browser || globalThis.chrome;
 

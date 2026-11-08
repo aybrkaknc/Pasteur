@@ -1,4 +1,4 @@
-// highlight.js - persistent text highlights via the CSS Custom Highlight API.
+// highlight/store.js - persistent text highlights via the CSS Custom Highlight API.
 // The page DOM is never modified: ranges are registered in CSS.highlights and painted by
 // highlight.css. Each highlight is stored as a text quote (exact + surrounding context)
 // per page in storage.local and re-anchored when the page is opened again.
@@ -8,6 +8,9 @@ const HL_CONTEXT = 32; // Characters of context saved before and after the quote
 const hlEntries = new Map(); // id -> { data, range } for highlights painted on the page
 let hlStore = []; // Saved records for the current page
 let hlKey = '';
+let hlLoading = null; // Storage read for hlKey; everyone waits for the same one
+let hlCurrentId = null; // Highlight last jumped to or clicked
+let hlFlashTimer = null;
 
 // Query and hash are ignored so the same article keeps its highlights
 function hlPageKey() {
@@ -29,83 +32,6 @@ function hlSave() {
   else api.storage.local.remove(hlKey);
 }
 
-// Flat text of the page with each text node's start offset; skips non-visible text and our own UI
-function hlBuildIndex() {
-  const nodes = [];
-  const starts = new Map();
-  let text = '';
-  if (!document.body) return { text, nodes, starts };
-  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
-    acceptNode(n) {
-      const p = n.parentElement;
-      if (!p || p.closest('script, style, noscript, textarea, template, #pasteur-host')) return NodeFilter.FILTER_REJECT;
-      return NodeFilter.FILTER_ACCEPT;
-    }
-  });
-  for (let n = walker.nextNode(); n; n = walker.nextNode()) {
-    nodes.push({ node: n, start: text.length });
-    starts.set(n, text.length);
-    text += n.data;
-  }
-  return { text, nodes, starts };
-}
-
-// Converts a Range boundary to an offset in the flat text
-function hlOffsetOf(index, container, offset) {
-  if (container.nodeType === Node.TEXT_NODE && index.starts.has(container)) {
-    return index.starts.get(container) + offset;
-  }
-  // Element boundary (or unindexed text): first indexed text node at or after the point
-  const probe = document.createRange();
-  probe.setStart(container, offset);
-  probe.collapse(true);
-  for (const e of index.nodes) {
-    if (probe.comparePoint(e.node, 0) >= 0) return e.start;
-  }
-  return index.text.length;
-}
-
-function hlLocate(index, pos, isEnd) {
-  for (const e of index.nodes) {
-    const len = e.node.data.length;
-    const inside = isEnd ? (pos > e.start && pos <= e.start + len) : (pos >= e.start && pos < e.start + len);
-    if (inside) return { node: e.node, offset: pos - e.start };
-  }
-  return null;
-}
-
-function hlRangeFromOffsets(index, start, end) {
-  const a = hlLocate(index, start, false);
-  const b = hlLocate(index, end, true);
-  if (!a || !b) return null;
-  const r = document.createRange();
-  r.setStart(a.node, a.offset);
-  r.setEnd(b.node, b.offset);
-  return r;
-}
-
-// Best occurrence of the quote: the one whose saved prefix/suffix still match
-function hlFind(index, data) {
-  let best = -1;
-  let bestScore = -1;
-  let from = 0;
-  for (;;) {
-    const i = index.text.indexOf(data.exact, from);
-    if (i === -1) break;
-    let score = 0;
-    if (index.text.slice(Math.max(0, i - data.prefix.length), i) === data.prefix) score += 1;
-    const end = i + data.exact.length;
-    if (index.text.slice(end, end + data.suffix.length) === data.suffix) score += 1;
-    if (score > bestScore) {
-      best = i;
-      bestScore = score;
-      if (score === 2) break;
-    }
-    from = i + 1;
-  }
-  return best;
-}
-
 function hlAdd(data, range) {
   hlRegistry(data.color).add(range);
   hlEntries.set(data.id, { data, range });
@@ -125,14 +51,18 @@ function hlRestore() {
 // Single-page apps change the URL without reloading; switch to that page's highlights
 function hlCheckNavigation() {
   const key = hlPageKey();
-  if (key === hlKey) return Promise.resolve();
+  if (key === hlKey) return hlLoading;
   for (const e of hlEntries.values()) hlRegistry(e.data.color).delete(e.range);
   hlEntries.clear();
+  hlCurrentId = null;
+  hlStore = [];
   hlKey = key;
-  return api.storage.local.get(key).then((res) => {
+  hlLoading = api.storage.local.get(key).then((res) => {
+    if (hlKey !== key) return; // The page changed again while reading
     hlStore = res[key] || [];
     hlRestore();
   });
+  return hlLoading;
 }
 
 // Resolves to the new record, or null when the selection cannot be highlighted
@@ -140,6 +70,7 @@ function hlCreateFromSelection(color) {
   const sel = window.getSelection();
   if (!HL_SUPPORTED || !sel || sel.rangeCount === 0 || sel.isCollapsed) return Promise.resolve(null);
   const range = sel.getRangeAt(0).cloneRange();
+  trimRangeWhitespace(range);
 
   return hlCheckNavigation().then(() => {
     const index = hlBuildIndex();
@@ -177,13 +108,25 @@ function hlRemove(id, save = true) {
     hlEntries.delete(id);
   }
   hlStore = hlStore.filter(d => d.id !== id);
+  if (hlCurrentId === id) hlCurrentId = null;
   if (save) hlSave();
+}
+
+// Changes the color of one highlight and saves it
+function hlRecolor(id, color) {
+  const e = hlEntries.get(id);
+  if (!e || e.data.color === color) return;
+  hlRegistry(e.data.color).delete(e.range);
+  e.data.color = color;
+  hlRegistry(color).add(e.range);
+  hlSave();
 }
 
 function hlClearAll() {
   for (const e of hlEntries.values()) hlRegistry(e.data.color).delete(e.range);
   hlEntries.clear();
   hlStore = [];
+  hlCurrentId = null;
   hlSave();
 }
 
@@ -195,26 +138,4 @@ function hlHitTest(x, y) {
     }
   }
   return null;
-}
-
-function hlInit() {
-  if (!HL_SUPPORTED) return;
-  hlCheckNavigation().then(() => {
-    if (!hlStore.length || !document.body) return;
-    // Pages that render late: retry while the DOM changes, for up to 10 seconds
-    let timer = null;
-    const observer = new MutationObserver(() => {
-      if (hlEntries.size >= hlStore.length) return;
-      clearTimeout(timer);
-      timer = setTimeout(hlRestore, 500);
-    });
-    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
-    setTimeout(() => observer.disconnect(), 10000);
-  });
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', hlInit);
-} else {
-  hlInit();
 }

@@ -132,5 +132,28 @@
   },
   "optHighlightsConfirm": {
     "message": "Emin misiniz? Tekrar tıklayın"
+  },
+  "copyTextAction": {
+    "message": "Metni kopyala"
+  },
+  "copyLinkAction": {
+    "message": "Bağlantıyı kopyala"
+  },
+  "hlPrevious": {
+    "message": "Önceki vurgu"
+  },
+  "hlNext": {
+    "message": "Sonraki vurgu"
+  },
+  "hlPosition": {
+    "message": "$INDEX$ / $TOTAL$",
+    "placeholders": {
+      "index": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
   }
 }

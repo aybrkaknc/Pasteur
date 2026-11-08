@@ -99,6 +99,17 @@
       </div>
       <button id="hlClear" class="btn" data-i18n="optHighlightsClear" disabled></button>
     </div>
+    <div class="row">
+      <span id="hlPos" class="sub"></span>
+      <div class="nav-group">
+        <button id="hlPrev" class="btn icon" data-i18n-label="hlPrevious" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+        </button>
+        <button id="hlNext" class="btn icon" data-i18n-label="hlNext" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+        </button>
+      </div>
+    </div>
   </section>
 
   <details class="card">
@@ -107,8 +118,12 @@
     <div class="sub" data-i18n="optExcludedHint"></div>
   </details>
 
-  <script src="settings.js"></script>
-  <script src="i18n.js"></script>
-  <script src="popup.js"></script>
+  <script src="shared/settings.js"></script>
+  <script src="shared/i18n.js"></script>
+  <script src="popup/bridge.js"></script>
+  <script src="popup/form.js"></script>
+  <script src="popup/highlights.js"></script>
+  <script src="popup/site.js"></script>
+  <script src="popup/main.js"></script>
 </body>
 </html>

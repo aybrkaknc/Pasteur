@@ -132,5 +132,28 @@
   },
   "optHighlightsConfirm": {
     "message": "¿Seguro? Haz clic de nuevo"
+  },
+  "copyTextAction": {
+    "message": "Copiar texto"
+  },
+  "copyLinkAction": {
+    "message": "Copiar enlace"
+  },
+  "hlPrevious": {
+    "message": "Resaltado anterior"
+  },
+  "hlNext": {
+    "message": "Siguiente resaltado"
+  },
+  "hlPosition": {
+    "message": "$INDEX$ / $TOTAL$",
+    "placeholders": {
+      "index": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
   }
 }
