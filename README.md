@@ -12,7 +12,7 @@ Pasteur copies selected text to the clipboard and offers search, highlights and 
 
 ![Platform](https://img.shields.io/badge/Platform-Firefox_and_Chrome-0078D4)
 ![Version](https://img.shields.io/badge/version-1.4.0-7b3fb3)
-![License](https://img.shields.io/badge/license-ISC-blue)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
 </div>
 
@@ -88,4 +88,4 @@ npm run build
 
 ## License
 
-ISC
+MIT

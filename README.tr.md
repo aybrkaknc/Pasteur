@@ -12,7 +12,7 @@ Pasteur, seçtiğiniz metni panoya kopyalar ve seçiminizin yanındaki küçük 
 
 ![Platform](https://img.shields.io/badge/Platform-Firefox_ve_Chrome-0078D4)
 ![Sürüm](https://img.shields.io/badge/sürüm-1.4.0-7b3fb3)
-![Lisans](https://img.shields.io/badge/lisans-ISC-blue)
+![Lisans](https://img.shields.io/badge/lisans-MIT-blue)
 
 </div>
 
@@ -88,4 +88,4 @@ npm run build
 
 ## Lisans
 
-ISC
+MIT
