@@ -14,7 +14,16 @@ const DEFAULT_SETTINGS = {
   position: 'above',
   // custom: bubble top-center relative to the selection's top-center, in px
   offsetX: 0,
-  offsetY: -50
+  offsetY: -50,
+  highlightColor: 'yellow'
+};
+
+// Solid colors for the UI (pen icon, color dots); page paint colors are in highlight.css
+const HIGHLIGHT_COLORS = {
+  yellow: '#ffd60a',
+  green: '#66d17a',
+  pink: '#ff7eb6',
+  blue: '#5fa8ff'
 };
 
 const SEARCH_ENGINES = {

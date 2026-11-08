@@ -91,5 +91,46 @@
   },
   "optOffsetHint": {
     "message": "Relativo al centro superior de la selección. Y negativo sube, X negativo mueve a la izquierda."
+  },
+  "highlightAction": {
+    "message": "Resaltar"
+  },
+  "highlightRemove": {
+    "message": "Quitar resaltado"
+  },
+  "highlightColorLabel": {
+    "message": "Color de resaltado"
+  },
+  "colorYellow": {
+    "message": "Amarillo"
+  },
+  "colorGreen": {
+    "message": "Verde"
+  },
+  "colorPink": {
+    "message": "Rosa"
+  },
+  "colorBlue": {
+    "message": "Azul"
+  },
+  "optHighlightsTitle": {
+    "message": "Resaltados en esta página"
+  },
+  "optHighlightsCount": {
+    "message": "$COUNT$ resaltados",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "optHighlightsNone": {
+    "message": "Sin resaltados"
+  },
+  "optHighlightsClear": {
+    "message": "Borrar"
+  },
+  "optHighlightsConfirm": {
+    "message": "¿Seguro? Haz clic de nuevo"
   }
 }

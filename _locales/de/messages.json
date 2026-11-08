@@ -91,5 +91,46 @@
   },
   "optOffsetHint": {
     "message": "Relativ zur oberen Mitte der Auswahl. Negatives Y verschiebt nach oben, negatives X nach links."
+  },
+  "highlightAction": {
+    "message": "Markieren"
+  },
+  "highlightRemove": {
+    "message": "Markierung entfernen"
+  },
+  "highlightColorLabel": {
+    "message": "Markierungsfarbe"
+  },
+  "colorYellow": {
+    "message": "Gelb"
+  },
+  "colorGreen": {
+    "message": "Grün"
+  },
+  "colorPink": {
+    "message": "Rosa"
+  },
+  "colorBlue": {
+    "message": "Blau"
+  },
+  "optHighlightsTitle": {
+    "message": "Markierungen auf dieser Seite"
+  },
+  "optHighlightsCount": {
+    "message": "$COUNT$ Markierungen",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "optHighlightsNone": {
+    "message": "Keine Markierungen"
+  },
+  "optHighlightsClear": {
+    "message": "Löschen"
+  },
+  "optHighlightsConfirm": {
+    "message": "Sicher? Erneut klicken"
   }
 }

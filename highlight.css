@@ -1,0 +1,5 @@
+/* Painted by the CSS Custom Highlight API; injected by the manifest so page CSP cannot block it */
+::highlight(pasteur-yellow) { background-color: rgba(255, 214, 10, 0.75); }
+::highlight(pasteur-green) { background-color: rgba(102, 209, 122, 0.7); }
+::highlight(pasteur-pink) { background-color: rgba(255, 126, 182, 0.7); }
+::highlight(pasteur-blue) { background-color: rgba(95, 168, 255, 0.65); }

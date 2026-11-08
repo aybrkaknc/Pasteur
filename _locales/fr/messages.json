@@ -91,5 +91,46 @@
   },
   "optOffsetHint": {
     "message": "Par rapport au centre supérieur de la sélection. Un Y négatif monte, un X négatif va à gauche."
+  },
+  "highlightAction": {
+    "message": "Surligner"
+  },
+  "highlightRemove": {
+    "message": "Retirer le surlignage"
+  },
+  "highlightColorLabel": {
+    "message": "Couleur de surlignage"
+  },
+  "colorYellow": {
+    "message": "Jaune"
+  },
+  "colorGreen": {
+    "message": "Vert"
+  },
+  "colorPink": {
+    "message": "Rose"
+  },
+  "colorBlue": {
+    "message": "Bleu"
+  },
+  "optHighlightsTitle": {
+    "message": "Surlignages sur cette page"
+  },
+  "optHighlightsCount": {
+    "message": "$COUNT$ surlignages",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "optHighlightsNone": {
+    "message": "Aucun surlignage"
+  },
+  "optHighlightsClear": {
+    "message": "Effacer"
+  },
+  "optHighlightsConfirm": {
+    "message": "Sûr ? Cliquez à nouveau"
   }
 }

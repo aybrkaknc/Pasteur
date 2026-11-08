@@ -84,6 +84,61 @@ const NOTIF_STYLES = `
   #pasteur-notif.success .ic-check { display: block; }
   #pasteur-notif.error .ic-clip { fill: #ff8a80; }
 
+  /* Highlight pen: painted in the current color; trash icon when the bubble is on a highlight */
+  .hl-wrap { position: relative; display: flex; }
+  #notif-hl-btn svg.ic-pen { fill: var(--hl, #ffd60a); }
+  .icon-btn svg.ic-trash { display: none; fill: #ff8a80; }
+  #pasteur-notif.on-highlight .ic-pen { display: none; }
+  #pasteur-notif.on-highlight .ic-trash { display: block; }
+  #pasteur-notif.on-highlight .hl-colors,
+  #pasteur-notif.no-hl .hl-wrap { display: none; }
+
+  /* Color picker above the pen (below it when the bubble is near the top edge) */
+  .hl-colors {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    padding-bottom: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  #pasteur-notif.dots-below .hl-colors {
+    bottom: auto;
+    top: 100%;
+    padding-bottom: 0;
+    padding-top: 8px;
+    transform: translateX(-50%) translateY(-4px);
+  }
+  .hl-wrap:hover .hl-colors,
+  .hl-wrap:focus-within .hl-colors {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%);
+  }
+  .hl-dots {
+    display: flex;
+    gap: 6px;
+    padding: 6px 8px;
+    background: #1a1c1e;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.3);
+  }
+  .hl-dot {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+  .hl-dot:hover { transform: scale(1.15); }
+  .hl-dot.active { border-color: #ffffff; }
+  .hl-dot:focus-visible { outline: 2px solid #5fa8ff; outline-offset: 1px; }
+
   #pasteur-panel {
     position: fixed;
     width: 340px;
@@ -182,6 +237,36 @@ function initializeNotification() {
   const searchBtn = makeIconButton('notif-search-btn', api.i18n.getMessage('searchTitle'), [
     { d: 'M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z' }
   ]);
+  const hlBtn = makeIconButton('notif-hl-btn', api.i18n.getMessage('highlightAction'), [
+    { cls: 'ic-pen', d: 'M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z' },
+    { cls: 'ic-trash', d: 'M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z' }
+  ]);
+  const hlWrap = document.createElement('div');
+  hlWrap.className = 'hl-wrap';
+  const hlColors = document.createElement('div');
+  hlColors.className = 'hl-colors';
+  const hlDots = document.createElement('div');
+  hlDots.className = 'hl-dots';
+  for (const name in HIGHLIGHT_COLORS) {
+    const dot = document.createElement('button');
+    dot.className = 'hl-dot';
+    dot.dataset.color = name;
+    dot.style.backgroundColor = HIGHLIGHT_COLORS[name];
+    const label = api.i18n.getMessage('color' + name[0].toUpperCase() + name.slice(1));
+    dot.title = label;
+    dot.setAttribute('aria-label', label);
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      settings.highlightColor = name;
+      api.storage.sync.set({ highlightColor: name });
+      applyHighlight(name);
+    });
+    hlDots.appendChild(dot);
+  }
+  hlColors.appendChild(hlDots);
+  hlWrap.appendChild(hlBtn);
+  hlWrap.appendChild(hlColors);
+
   const gearBtn = makeIconButton('notif-gear-btn', api.i18n.getMessage('settingsTitle'), [
     { d: 'M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z' }
   ]);
@@ -189,6 +274,7 @@ function initializeNotification() {
   notificationElement.appendChild(textSpan);
   notificationElement.appendChild(copyBtn);
   notificationElement.appendChild(searchBtn);
+  notificationElement.appendChild(hlWrap);
   notificationElement.appendChild(gearBtn);
 
   // Keep the page selection when clicking inside the bubble
@@ -205,6 +291,16 @@ function initializeNotification() {
       const base = SEARCH_ENGINES[settings.searchEngine] || SEARCH_ENGINES.google;
       window.open(base + encodeURIComponent(currentSelectedText), '_blank', 'noopener,noreferrer');
     }
+  });
+
+  hlBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (hitHighlightId) {
+      hlRemove(hitHighlightId);
+      hideNotification();
+      return;
+    }
+    applyHighlight(settings.highlightColor);
   });
 
   gearBtn.addEventListener('click', (e) => {
@@ -348,6 +444,10 @@ window.addEventListener('message', (e) => {
   if (!settingsFrame || e.source !== settingsFrame.contentWindow || !e.data) return;
   if (e.data.pasteur === 'close') closeSettingsPanel();
   if (e.data.pasteur === 'size') placePanel(e.data.height);
+  if (e.data.pasteur === 'hl-count' || e.data.pasteur === 'hl-clear') {
+    if (e.data.pasteur === 'hl-clear') hlClearAll();
+    settingsFrame.contentWindow.postMessage({ pasteur: 'hl-reply', count: hlStore.length }, '*');
+  }
 });
 
 // Click outside the bubble and panel closes both
@@ -364,7 +464,15 @@ document.addEventListener('mousedown', (e) => {
 document.addEventListener('scroll', () => {
   if (!bubbleActive) return;
   closeSettingsPanel();
-  const { text, rect } = getSelectedText();
+  let text;
+  let rect;
+  const hit = hitHighlightId && hlEntries.get(hitHighlightId);
+  if (hit) {
+    text = hit.data.exact;
+    rect = hit.range.getBoundingClientRect();
+  } else {
+    ({ text, rect } = getSelectedText());
+  }
   if (!text || text !== currentSelectedText || !rect) {
     hideNotification();
     return;
@@ -443,6 +551,7 @@ function handleSelection() {
 
   currentSelectedText = text;
   lastHandledText = text;
+  hitHighlightId = null;
   if (settings.autoCopy) {
     copyText(text, rect);
   } else {
@@ -460,6 +569,38 @@ document.addEventListener('mouseup', (e) => {
   lastPointer = { x: e.clientX, y: e.clientY };
   clearTimeout(selectionTimeout);
   handleSelection();
+
+  const sel = window.getSelection();
+  if (!sel || !sel.isCollapsed || !notificationElement) return;
+  if (e.composedPath().includes(notificationElement)) return;
+  if (!settings.enabled || isHostExcluded(getPageHostname(), settings.excludedSites)) return;
+  const hit = hlHitTest(e.clientX, e.clientY);
+  if (hit) showHighlightBubble(hit);
+});
+
+// Bubble for a clicked highlight: copy and search use its text, the pen becomes a remove button
+function showHighlightBubble(entry) {
+  currentSelectedText = entry.data.exact;
+  hitHighlightId = entry.data.id;
+  showStatusNotification(entry.range.getBoundingClientRect(), 'offer');
+}
+
+function applyHighlight(color) {
+  hlCreateFromSelection(color).then((data) => {
+    if (!data) return;
+    window.getSelection().removeAllRanges();
+    hideNotification();
+  });
+}
+
+// Messages from the settings popup (toolbar or in-page panel); the top frame answers
+api.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (!msg || typeof msg !== 'object') return false;
+  if (msg.pasteur === 'hl-clear') hlClearAll();
+  if ((msg.pasteur === 'hl-count' || msg.pasteur === 'hl-clear') && window === window.top) {
+    sendResponse(hlStore.length);
+  }
+  return false;
 });
 
 // Keyboard/touch selection; also resets dedupe when the selection is cleared
@@ -478,6 +619,7 @@ let hideDeadline = 0;
 let hideRemaining = 0;
 let bubbleActive = false; // Bubble is logically open (it may be hidden while its text is off-screen)
 let bubbleOffscreen = false;
+let hitHighlightId = null; // Set while the bubble belongs to a clicked highlight
 
 function startHideTimer(ms) {
   clearTimeout(hideTimeout);
@@ -518,12 +660,14 @@ function positionNotification(rect) {
   y = Math.min(Math.max(y, 8), window.innerHeight - h - 8);
   notificationElement.style.left = `${x}px`;
   notificationElement.style.top = `${y}px`;
+  notificationElement.classList.toggle('dots-below', y < 56);
 }
 
 function hideNotification() {
   clearTimeout(hideTimeout);
   bubbleActive = false;
   bubbleOffscreen = false;
+  hitHighlightId = null;
   if (notificationElement) notificationElement.classList.replace('show', 'hide');
 }
 
@@ -535,6 +679,19 @@ function showStatusNotification(rect, type) {
 
   notificationElement.className = '';
   notificationElement.classList.add(type);
+
+  // Pen: hidden for form fields (ranges cannot mark their text) and unsupported browsers
+  const el = document.activeElement;
+  const inField = el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA');
+  notificationElement.classList.toggle('no-hl', !HL_SUPPORTED || (inField && !hitHighlightId));
+  notificationElement.classList.toggle('on-highlight', !!hitHighlightId);
+  const color = settings.highlightColor;
+  const hlBtn = notificationElement.querySelector('#notif-hl-btn');
+  const hlLabel = api.i18n.getMessage(hitHighlightId ? 'highlightRemove' : 'highlightAction');
+  hlBtn.style.setProperty('--hl', HIGHLIGHT_COLORS[color] || HIGHLIGHT_COLORS.yellow);
+  hlBtn.title = hlLabel;
+  hlBtn.setAttribute('aria-label', hlLabel);
+  notificationElement.querySelectorAll('.hl-dot').forEach((d) => d.classList.toggle('active', d.dataset.color === color));
 
   // Visual feedback comes from the icons; the text is for screen readers only
   textSpan.textContent = type === 'success' ? api.i18n.getMessage('copiedMessage')

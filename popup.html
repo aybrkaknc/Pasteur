@@ -82,6 +82,25 @@
     </div>
   </section>
 
+  <section class="card">
+    <label>
+      <span class="sub" data-i18n="highlightColorLabel"></span>
+      <select id="highlightColor">
+        <option value="yellow" data-i18n="colorYellow"></option>
+        <option value="green" data-i18n="colorGreen"></option>
+        <option value="pink" data-i18n="colorPink"></option>
+        <option value="blue" data-i18n="colorBlue"></option>
+      </select>
+    </label>
+    <div class="row full">
+      <div>
+        <div class="label" data-i18n="optHighlightsTitle"></div>
+        <div id="hlCount" class="sub"></div>
+      </div>
+      <button id="hlClear" class="btn" data-i18n="optHighlightsClear" disabled></button>
+    </div>
+  </section>
+
   <details class="card">
     <summary data-i18n="optExcludedTitle"></summary>
     <textarea id="excludedSites" rows="4" placeholder="example.com"></textarea>

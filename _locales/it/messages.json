@@ -91,5 +91,46 @@
   },
   "optOffsetHint": {
     "message": "Rispetto al centro superiore della selezione. Y negativo sposta in alto, X negativo a sinistra."
+  },
+  "highlightAction": {
+    "message": "Evidenzia"
+  },
+  "highlightRemove": {
+    "message": "Rimuovi evidenziazione"
+  },
+  "highlightColorLabel": {
+    "message": "Colore evidenziazione"
+  },
+  "colorYellow": {
+    "message": "Giallo"
+  },
+  "colorGreen": {
+    "message": "Verde"
+  },
+  "colorPink": {
+    "message": "Rosa"
+  },
+  "colorBlue": {
+    "message": "Blu"
+  },
+  "optHighlightsTitle": {
+    "message": "Evidenziazioni in questa pagina"
+  },
+  "optHighlightsCount": {
+    "message": "$COUNT$ evidenziazioni",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "optHighlightsNone": {
+    "message": "Nessuna evidenziazione"
+  },
+  "optHighlightsClear": {
+    "message": "Cancella"
+  },
+  "optHighlightsConfirm": {
+    "message": "Sicuro? Clicca di nuovo"
   }
 }

@@ -91,5 +91,46 @@
   },
   "optOffsetHint": {
     "message": "Seçimin üst ortasına göre. Negatif Y yukarı, negatif X sola taşır."
+  },
+  "highlightAction": {
+    "message": "Vurgula"
+  },
+  "highlightRemove": {
+    "message": "Vurguyu kaldır"
+  },
+  "highlightColorLabel": {
+    "message": "Vurgu rengi"
+  },
+  "colorYellow": {
+    "message": "Sarı"
+  },
+  "colorGreen": {
+    "message": "Yeşil"
+  },
+  "colorPink": {
+    "message": "Pembe"
+  },
+  "colorBlue": {
+    "message": "Mavi"
+  },
+  "optHighlightsTitle": {
+    "message": "Bu sayfadaki vurgular"
+  },
+  "optHighlightsCount": {
+    "message": "$COUNT$ vurgu",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "optHighlightsNone": {
+    "message": "Vurgu yok"
+  },
+  "optHighlightsClear": {
+    "message": "Temizle"
+  },
+  "optHighlightsConfirm": {
+    "message": "Emin misiniz? Tekrar tıklayın"
   }
 }

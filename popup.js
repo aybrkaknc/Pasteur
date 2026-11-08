@@ -38,6 +38,7 @@ function save() {
     position: document.getElementById('position').value,
     offsetX: clampNumber(document.getElementById('offsetX'), DEFAULT_SETTINGS.offsetX),
     offsetY: clampNumber(document.getElementById('offsetY'), DEFAULT_SETTINGS.offsetY),
+    highlightColor: document.getElementById('highlightColor').value,
     excludedSites: parseSites(document.getElementById('excludedSites').value)
   };
   toggles.forEach((id) => { data[id] = document.getElementById(id).checked; });
@@ -49,7 +50,38 @@ function save() {
   });
 }
 
-Promise.all([loadSettings(), api.tabs.query({ active: true, currentWindow: true })]).then(([s, tabs]) => {
+// Embedded in a web page the extension frame has no tabs API; the page's content script
+// supplies the hostname and answers highlight requests through postMessage instead.
+const embedded = window.top !== window;
+const activeTab = embedded || !api.tabs
+  ? Promise.resolve([])
+  : api.tabs.query({ active: true, currentWindow: true }).catch(() => []);
+
+// Asks the page for highlight data: tabs messaging in the toolbar popup, postMessage in the panel
+function askPage(type) {
+  if (!embedded) {
+    return activeTab.then((tabs) => {
+      if (!tabs[0]) throw new Error('no tab');
+      return api.tabs.sendMessage(tabs[0].id, { pasteur: type });
+    });
+  }
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      window.removeEventListener('message', onReply);
+      reject(new Error('no reply'));
+    }, 1500);
+    function onReply(e) {
+      if (e.source !== parent || !e.data || e.data.pasteur !== 'hl-reply') return;
+      clearTimeout(timer);
+      window.removeEventListener('message', onReply);
+      resolve(e.data.count);
+    }
+    window.addEventListener('message', onReply);
+    parent.postMessage({ pasteur: type }, '*');
+  });
+}
+
+Promise.all([loadSettings(), activeTab]).then(([s, tabs]) => {
   toggles.forEach((id) => { document.getElementById(id).checked = s[id]; });
   document.getElementById('duration').value = s.duration;
   document.getElementById('minLength').value = s.minLength;
@@ -57,6 +89,7 @@ Promise.all([loadSettings(), api.tabs.query({ active: true, currentWindow: true 
   document.getElementById('excludedSites').value = s.excludedSites.join('\n');
   document.getElementById('offsetX').value = s.offsetX;
   document.getElementById('offsetY').value = s.offsetY;
+  document.getElementById('highlightColor').value = s.highlightColor;
 
   const positionEl = document.getElementById('position');
   const customOffsetEl = document.getElementById('customOffset');
@@ -64,8 +97,33 @@ Promise.all([loadSettings(), api.tabs.query({ active: true, currentWindow: true 
   customOffsetEl.hidden = s.position !== 'custom';
   positionEl.addEventListener('change', () => { customOffsetEl.hidden = positionEl.value !== 'custom'; });
 
-  document.querySelectorAll('#enabled, #autoCopy, #copyInFields, #duration, #minLength, #searchEngine, #position, #offsetX, #offsetY, #excludedSites')
+  document.querySelectorAll('#enabled, #autoCopy, #copyInFields, #duration, #minLength, #searchEngine, #position, #offsetX, #offsetY, #highlightColor, #excludedSites')
     .forEach((el) => el.addEventListener('change', save));
+
+  // Highlights on this page: the content script answers with the count (no answer = unsupported page)
+  const hlCountEl = document.getElementById('hlCount');
+  const hlClearEl = document.getElementById('hlClear');
+  const showCount = (n) => {
+    hlCountEl.textContent = n > 0
+      ? api.i18n.getMessage('optHighlightsCount', [String(n)])
+      : api.i18n.getMessage('optHighlightsNone');
+    hlClearEl.disabled = !(n > 0);
+  };
+  askPage('hl-count').then(showCount, () => showCount(0));
+  // Clearing deletes saved data, so it takes a second click to confirm
+  let armed = false;
+  hlClearEl.addEventListener('click', () => {
+    if (!armed) {
+      armed = true;
+      hlClearEl.textContent = api.i18n.getMessage('optHighlightsConfirm');
+      hlClearEl.classList.add('danger');
+      return;
+    }
+    armed = false;
+    hlClearEl.textContent = api.i18n.getMessage('optHighlightsClear');
+    hlClearEl.classList.remove('danger');
+    askPage('hl-clear').then(showCount, () => showCount(0));
+  });
 
   // The in-page panel passes the hostname; the toolbar popup reads it from the active tab
   let hostname = new URLSearchParams(location.search).get('host') || '';

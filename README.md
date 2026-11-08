@@ -9,6 +9,7 @@ A lightweight Firefox and Chrome extension that copies selected text to the clip
 - **Manual mode:** turn auto copy off and a "Copy" button appears next to the selection instead.
 - **Text fields:** selections inside inputs and textareas can be copied too (optional). Password fields are never copied.
 - **Quick search:** the magnifier in the notification searches the selection with Google, DuckDuckGo, Bing or Yandex.
+- **Highlighter:** the pen in the notification marks the selection in yellow, green, pink or blue. Highlights are saved per page and come back when you return. Click a highlight to remove it, or clear the whole page from the popup.
 - **Notification position:** above or below the selection, next to the cursor, any screen corner, or a custom X/Y offset from the selection.
 - **Site exclusion:** disable the extension on specific domains (subdomains included).
 - **Isolated UI:** the notification lives in a Shadow DOM, so page styles cannot affect it.

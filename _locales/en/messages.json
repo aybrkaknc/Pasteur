@@ -91,5 +91,46 @@
   },
   "optOffsetHint": {
     "message": "Relative to the top center of the selection. Negative Y moves up, negative X moves left."
+  },
+  "highlightAction": {
+    "message": "Highlight"
+  },
+  "highlightRemove": {
+    "message": "Remove highlight"
+  },
+  "highlightColorLabel": {
+    "message": "Highlight color"
+  },
+  "colorYellow": {
+    "message": "Yellow"
+  },
+  "colorGreen": {
+    "message": "Green"
+  },
+  "colorPink": {
+    "message": "Pink"
+  },
+  "colorBlue": {
+    "message": "Blue"
+  },
+  "optHighlightsTitle": {
+    "message": "Highlights on this page"
+  },
+  "optHighlightsCount": {
+    "message": "$COUNT$ highlights",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "optHighlightsNone": {
+    "message": "No highlights"
+  },
+  "optHighlightsClear": {
+    "message": "Clear"
+  },
+  "optHighlightsConfirm": {
+    "message": "Sure? Click again"
   }
 }

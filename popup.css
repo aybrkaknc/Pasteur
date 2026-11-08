@@ -78,6 +78,23 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus
   outline-offset: -1px;
 }
 
+.btn {
+  font: inherit;
+  font-weight: 600;
+  flex-shrink: 0;
+  padding: 6px 12px;
+  color: var(--text);
+  background: var(--field);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.btn:hover:not(:disabled) { background: var(--hover); }
+.btn:disabled { opacity: 0.4; cursor: default; }
+.btn.danger { color: #ff8a80; border-color: rgba(255, 138, 128, 0.4); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
 details summary {
   cursor: pointer;
   font-weight: 600;
