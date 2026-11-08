@@ -1,4 +1,4 @@
-# copy2select
+# Pasteur
 
 English | [Türkçe](README.tr.md)
 

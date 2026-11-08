@@ -1,4 +1,4 @@
-// content.js - copy2select
+// content.js - Pasteur
 // Shadow DOM isolated notification + quick search + optional manual copy mode
 
 let shadowRoot = null;
@@ -23,7 +23,7 @@ function getPageHostname() {
 }
 
 const NOTIF_STYLES = `
-  #copy2select-notif {
+  #pasteur-notif {
     position: fixed;
     color: #ffffff;
     padding: 4px;
@@ -80,11 +80,11 @@ const NOTIF_STYLES = `
 
   /* Copy button: clipboard by default, check mark after a successful copy */
   .icon-btn svg.ic-check { display: none; fill: #66d17a; }
-  #copy2select-notif.success .ic-clip { display: none; }
-  #copy2select-notif.success .ic-check { display: block; }
-  #copy2select-notif.error .ic-clip { fill: #ff8a80; }
+  #pasteur-notif.success .ic-clip { display: none; }
+  #pasteur-notif.success .ic-check { display: block; }
+  #pasteur-notif.error .ic-clip { fill: #ff8a80; }
 
-  #copy2select-panel {
+  #pasteur-panel {
     position: fixed;
     width: 340px;
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -99,14 +99,14 @@ const NOTIF_STYLES = `
                 height 0.2s ease;
   }
   /* Slide in from the bubble's direction */
-  #copy2select-panel.side-below { transform: translateY(-8px) scale(0.96); transform-origin: top center; }
-  #copy2select-panel.side-above { transform: translateY(8px) scale(0.96); transform-origin: bottom center; }
-  #copy2select-panel.side-right { transform: translateX(-8px) scale(0.96); transform-origin: center left; }
-  #copy2select-panel.side-left { transform: translateX(8px) scale(0.96); transform-origin: center right; }
-  #copy2select-panel.open { opacity: 1; transform: none; }
+  #pasteur-panel.side-below { transform: translateY(-8px) scale(0.96); transform-origin: top center; }
+  #pasteur-panel.side-above { transform: translateY(8px) scale(0.96); transform-origin: bottom center; }
+  #pasteur-panel.side-right { transform: translateX(-8px) scale(0.96); transform-origin: center left; }
+  #pasteur-panel.side-left { transform: translateX(8px) scale(0.96); transform-origin: center right; }
+  #pasteur-panel.open { opacity: 1; transform: none; }
 
   /* Caret linking the panel to the gear; drawn over the panel border, pointing at the bubble */
-  #copy2select-arrow {
+  #pasteur-arrow {
     position: fixed;
     width: 12px;
     height: 12px;
@@ -119,26 +119,26 @@ const NOTIF_STYLES = `
     opacity: 0;
     transition: opacity 0.25s ease 0.05s;
   }
-  #copy2select-arrow.side-below { transform: rotate(45deg); }
-  #copy2select-arrow.side-above { transform: rotate(225deg); }
-  #copy2select-arrow.side-right { transform: rotate(-45deg); }
-  #copy2select-arrow.side-left { transform: rotate(135deg); }
-  #copy2select-arrow.open { opacity: 1; }
+  #pasteur-arrow.side-below { transform: rotate(45deg); }
+  #pasteur-arrow.side-above { transform: rotate(225deg); }
+  #pasteur-arrow.side-right { transform: rotate(-45deg); }
+  #pasteur-arrow.side-left { transform: rotate(135deg); }
+  #pasteur-arrow.open { opacity: 1; }
 
-  #copy2select-notif.success,
-  #copy2select-notif.offer { background-color: #1a1c1e; }
-  #copy2select-notif.error { background-color: #2c1a1a; border-color: rgba(255, 0, 0, 0.2); }
-  #copy2select-notif.show { opacity: 1; transform: scale(1) translateY(0) translateX(-50%); }
-  #copy2select-notif.hide { pointer-events: none; opacity: 0; transform: scale(0.95) translateY(-5px) translateX(-50%); }
+  #pasteur-notif.success,
+  #pasteur-notif.offer { background-color: #1a1c1e; }
+  #pasteur-notif.error { background-color: #2c1a1a; border-color: rgba(255, 0, 0, 0.2); }
+  #pasteur-notif.show { opacity: 1; transform: scale(1) translateY(0) translateX(-50%); }
+  #pasteur-notif.hide { pointer-events: none; opacity: 0; transform: scale(0.95) translateY(-5px) translateX(-50%); }
 `;
 
 function initializeNotification() {
   if (notificationElement && notificationElement.isConnected) return;
-  const staleHost = document.getElementById('copy2select-host');
+  const staleHost = document.getElementById('pasteur-host');
   if (staleHost) staleHost.remove();
 
   const host = document.createElement('div');
-  host.id = 'copy2select-host';
+  host.id = 'pasteur-host';
   document.body.appendChild(host);
 
   shadowRoot = host.attachShadow({ mode: 'open' });
@@ -148,7 +148,7 @@ function initializeNotification() {
   shadowRoot.appendChild(styleTag);
 
   notificationElement = document.createElement('div');
-  notificationElement.id = 'copy2select-notif';
+  notificationElement.id = 'pasteur-notif';
   notificationElement.setAttribute('role', 'status');
   notificationElement.setAttribute('aria-live', 'polite');
 
@@ -304,13 +304,13 @@ function openSettingsPanel() {
   panelSide = panelBox.side;
 
   settingsFrame = document.createElement('iframe');
-  settingsFrame.id = 'copy2select-panel';
+  settingsFrame.id = 'pasteur-panel';
   settingsFrame.className = `side-${panelSide}`;
   // Pages opened from the page (not the toolbar) get no activeTab access, so pass the hostname
   settingsFrame.src = api.runtime.getURL('popup.html') + '?host=' + encodeURIComponent(getPageHostname());
 
   settingsArrow = document.createElement('div');
-  settingsArrow.id = 'copy2select-arrow';
+  settingsArrow.id = 'pasteur-arrow';
   settingsArrow.className = `side-${panelSide}`;
 
   shadowRoot.appendChild(settingsFrame);
@@ -346,8 +346,8 @@ function closeSettingsPanel() {
 
 window.addEventListener('message', (e) => {
   if (!settingsFrame || e.source !== settingsFrame.contentWindow || !e.data) return;
-  if (e.data.copy2select === 'close') closeSettingsPanel();
-  if (e.data.copy2select === 'size') placePanel(e.data.height);
+  if (e.data.pasteur === 'close') closeSettingsPanel();
+  if (e.data.pasteur === 'size') placePanel(e.data.height);
 });
 
 // Click outside the bubble and panel closes both

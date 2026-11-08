@@ -6,10 +6,10 @@ let statusTimeout = null;
 
 // Embedded as the in-page panel: report height and close on Escape
 if (window.top !== window) {
-  const postSize = () => parent.postMessage({ copy2select: 'size', height: document.documentElement.scrollHeight }, '*');
+  const postSize = () => parent.postMessage({ pasteur: 'size', height: document.documentElement.scrollHeight }, '*');
   new ResizeObserver(postSize).observe(document.body);
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') parent.postMessage({ copy2select: 'close' }, '*');
+    if (e.key === 'Escape') parent.postMessage({ pasteur: 'close' }, '*');
   });
 }
 
